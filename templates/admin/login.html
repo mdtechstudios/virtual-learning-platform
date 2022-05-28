@@ -4,7 +4,7 @@
 {{ super() }}
 <style type="text/css">
     body {
-        background-image: url('https://www.viewsonic.com/library/wp-content/uploads/2020/07/LB0144.jpeg');
+        background-image: url('http://127.0.0.1:5000/static/images/bg.jpeg');
         background-size: cover;
         background-repeat: no-repeat;
     }
@@ -14,9 +14,9 @@
 <!-- Header -->
 <nav class="navbar bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="{{ url_for('admin.home') }}">
-            <img src="https://www.nicepng.com/png/full/794-7946773_e-learning-logo-png.png"
-                alt="Virtual Learning for Students" height="30" class="d-inline-block align-text-top ms-3">
+        <a class="navbar-brand" href="{{ url_for('admin.dashboard') }}">
+            <img src="{{ url_for('static',filename='images/logo.png') }}" alt="Virtual Learning for Students"
+                height="30" class="d-inline-block align-text-top ms-3">
         </a>
     </div>
 </nav>
@@ -24,23 +24,23 @@
     <div class="row">
         <div class="col"></div>
         <div class="col-4 bg-dark text-light p-4 m-3 rounded-2">
-            <form>
+            <form method="POST" action="{{url_for('admin.login')}}">
+                {{ form.csrf_token }}
                 <div class="mb-3">
-                    <label for="email" class="form-label">Email address</label>
-                    <input name="email" type="email" class="form-control" id="email">
+                    {{ form.email.label(for="email",class="form-label") }}
+                    {{ form.email(class="form-control") }}
                 </div>
                 <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input name="password" type="password" class="form-control" id="password">
+                    {{ form.password.label(for="password",class="form-label") }}
+                    {{ form.password(class="form-control") }}
                 </div>
                 <div class="mb-3 text-center">
                     <button type="submit" class="btn btn-primary">Login</button>
                 </div>
             </form>
-            <br>
-            {{ online_users }}
         </div>
-        <div class="col"></div>
+        <div class="col">
+        </div>
     </div>
 </div>
 
