@@ -1,0 +1,54 @@
+{% extends "admin/base.html" %}
+{% block title %}View Lecturers{% endblock %}
+{% block head %}
+{{ super() }}
+<style type="text/css">
+</style>
+{% endblock %}
+{% block content %}
+<div class="container border border-1 rounded-2">
+    <p class="fw-bold fs-4 mb-2 mt-2">View Lecturers</p>
+    <table class="table table-striped table-hover" id="myTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Semesters</th>
+                <th>Subject Codes</th>
+                <th>Info</th>
+                <!-- <th>Password</th> -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for lect in lecturers: %}
+            <tr>
+                <td>{{lect._id}}</td>
+                <td>{{lect.name}}</td>
+                <td>{{lect.email}}</td>
+                <td>
+                    <ul>
+                        {% for sem in lect.semester %}
+                        <li>{{sem}}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        {% for subj in lect.subjects_code %}
+                        <li>{{subj}}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td>{{lect.info}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+    });
+</script>
+{% endblock %}

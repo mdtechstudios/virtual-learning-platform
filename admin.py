@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for
+from flask import Blueprint, render_template, redirect, url_for,flash, request
 from flask_wtf import FlaskForm
 from wtforms import StringField, EmailField, PasswordField, TextAreaField
 from wtforms.validators import DataRequired
@@ -9,7 +9,26 @@ admin = Blueprint('admin', __name__, url_prefix='/admin')
 # Admin Dashboard
 @admin.route('/', methods=['GET','POST'])
 def home():
-    return 'Home'
+    return render_template('admin/home.html')
+
+
+# View All Lecturers
+@admin.route('/lecturers', methods=['GET','POST'])
+def viewlecturers():
+    data = db.lecturers.find()
+    return render_template('admin/view-lecturers.html',lecturers=data)
+
+
+# Add Lecturer
+@admin.route('/add-lecturers', methods=['GET','POST'])
+def addlecturers():
+    semdata = db.semesters.find()
+    subdata = db.subjects.find()
+    if request.method == 'POST':
+        data = request.form
+        print(data)
+        return data
+    return render_template('admin/add-lecturer.html',semesters=semdata,subjects=subdata)
 
 
 # Admin Login
@@ -25,9 +44,8 @@ def login():
         }
         res = db.admin.find_one(data)
         if res is None:
-            msg = "Invalid Email/Password"
-            print(msg)
-            render_template('admin/login.html',form=form, message=msg)
+            flash("Invalid Email/Password")
+            render_template('admin/login.html',form=form)
         else:
             return redirect(url_for('admin.home'))
     return render_template('admin/login.html',form=form)

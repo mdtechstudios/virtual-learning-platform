@@ -1,0 +1,69 @@
+{% extends "admin/base.html" %}
+{% block title %}Add Lecturer{% endblock %}
+{% block head %}
+{{ super() }}
+<style type="text/css">
+</style>
+{% endblock %}
+{% block content %}
+<div class="container border border-1 rounded-2">
+    <p class="fw-bold fs-4 mb-2 mt-2">Add Lecturer</p>
+    <div class="container">
+        <form method="POST" action="{{ url_for('admin.addlecturers') }}">
+            <div class="row">
+                <div class="col">
+                    <div class="mb-3">
+                        <label for="fname" class="form-label">Full Name</label>
+                        <input name="fname" type="text" class="form-control" id="fname">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="mb-3">
+                        <label for="sem" class="form-label">Select Semesters</label>
+                        <select name="semesters" id="sem" class="form-select">
+                            {% for sem in semesters: %}
+                            <option value="{{ sem.code }}">{{ sem.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="mb-3">
+                        <label for="subjects" class="form-label">Select Subjects</label>
+                        <select name="subjects" id="subjects" class="form-select">
+                            {% for sub in subjects: %}
+                            <option value="{{ sub.code }}">{{ sub.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input name="email" type="email" class="form-control" id="email">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input name="password" type="password" class="form-control" id="password">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="mb-3">
+                        <label for="info" class="form-label">Additional Info</label>
+                        <textarea name="info" class="form-control" id="info" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-md btn-rounded btn-block mb-4">Add
+                Lecturer</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

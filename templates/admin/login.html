@@ -4,7 +4,7 @@
 <head>
     <title>Login - Admin Panel | Virtual Learning for Student</title>
 
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/mdb.min.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}" />
 
     <style type="text/css">
@@ -17,17 +17,26 @@
 </head>
 
 <body>
-
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand ms-5" href="{{ url_for('admin.home') }}">
+                <img src="{{ url_for('static',filename='images/logo.png') }}" alt="Virtual Learning Platform"
+                    height="30" class="d-inline-block align-text-top">
+                Virtaul Learning Platform
+            </a>
+        </div>
+    </nav>
     <div class="container">
         <div class="row">
-            <div class="col">
+            <div class="col mt-5">
                 {% with messages = get_flashed_messages() %}
                 {% if messages %}
-                <ul class=flashes>
-                    {% for message in messages %}
-                    <li>{{ message }}</li>
-                    {% endfor %}
-                </ul>
+                {% for message in messages %}
+                <div class="alert alert-danger bg-danger text-light alert-dismissible fade show" role="alert">
+                    <strong>{{ message }}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
                 {% endif %}
                 {% endwith %}
             </div>
@@ -37,14 +46,14 @@
                     <form method="POST" action="{{ url_for('admin.login') }}">
                         {{ form.csrf_token }}
                         <div class="form-outline mb-4">
-                            {{ form.email(class="form-control form-control-lg",id="email") }}
                             {{ form.email.label(for="email",class="form-label") }}
+                            {{ form.email(class="form-control form-control-md",id="email") }}
                         </div>
                         <div class="form-outline mb-4">
-                            {{ form.password(class="form-control form-control-lg",id="email") }}
                             {{ form.password.label(for="email",class="form-label") }}
+                            {{ form.password(class="form-control form-control-md",id="email") }}
                         </div>
-                        <button type="submit" class="btn btn-primary btn-lg btn-rounded btn-block mb-4">Sign in</button>
+                        <button type="submit" class="btn btn-primary btn-md btn-rounded btn-block mb-4">Sign in</button>
                     </form>
                 </div>
             </div>
@@ -52,7 +61,7 @@
         </div>
     </div>
 
-    <script src="{{ url_for('static',filename='js/mdb.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ url_for('static',filename='js/main.js') }}"></script>
 </body>
 
