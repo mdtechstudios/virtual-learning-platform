@@ -2,25 +2,44 @@
 {% block title %}Add Lecturer{% endblock %}
 {% block head %}
 {{ super() }}
+<script type="text/javascript">
+    $("select").bsMultiSelect({
+        cssPatch: {
+            choices: { columnCount: '3' },
+        }
+    });
+</script>
 <style type="text/css">
 </style>
 {% endblock %}
 {% block content %}
 <div class="container border border-1 rounded-2">
     <p class="fw-bold fs-4 mb-2 mt-2">Add Lecturer</p>
+    <div>{% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-warning bg-warning text-light alert-dismissible fade show" role="alert">
+            <strong>{{ message }}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
     <div class="container">
         <form method="POST" action="{{ url_for('admin.addlecturers') }}">
             <div class="row">
                 <div class="col">
                     <div class="mb-3">
                         <label for="fname" class="form-label">Full Name</label>
-                        <input name="fname" type="text" class="form-control" id="fname">
+                        <input name="fname" type="text" class="form-control" id="fname" required>
                     </div>
                 </div>
                 <div class="col">
                     <div class="mb-3">
-                        <label for="sem" class="form-label">Select Semesters</label>
-                        <select name="semesters" id="sem" class="form-select">
+
+                        <label for="sem" class="selectpicker">Select Semesters</label>
+                        <select name="semesters[]" id="sem" class="form-select" multiple required>
                             {% for sem in semesters: %}
                             <option value="{{ sem.code }}">{{ sem.name }}</option>
                             {% endfor %}
@@ -30,7 +49,7 @@
                 <div class="col">
                     <div class="mb-3">
                         <label for="subjects" class="form-label">Select Subjects</label>
-                        <select name="subjects" id="subjects" class="form-select">
+                        <select name="subjects[]" id="subjects" class="form-select" multiple required>
                             {% for sub in subjects: %}
                             <option value="{{ sub.code }}">{{ sub.name }}</option>
                             {% endfor %}
@@ -42,13 +61,13 @@
                 <div class="col">
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
-                        <input name="email" type="email" class="form-control" id="email">
+                        <input name="email" type="email" class="form-control" id="email" required>
                     </div>
                 </div>
                 <div class="col">
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
-                        <input name="password" type="password" class="form-control" id="password">
+                        <input name="password" type="password" class="form-control" id="password" required>
                     </div>
                 </div>
             </div>
@@ -56,7 +75,7 @@
                 <div class="col">
                     <div class="mb-3">
                         <label for="info" class="form-label">Additional Info</label>
-                        <textarea name="info" class="form-control" id="info" rows="3"></textarea>
+                        <textarea name="info" class="form-control" id="info" rows="3" required></textarea>
                     </div>
                 </div>
             </div>
@@ -65,5 +84,9 @@
         </form>
     </div>
 </div>
-
+<script type="text/javascript">
+    // $(document).ready(function () {
+    //     $('select').multiselect();
+    // });  
+</script>
 {% endblock %}

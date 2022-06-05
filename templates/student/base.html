@@ -3,7 +3,7 @@
 
 <head>
     {% block head %}
-    <title>{% block title %}{% endblock %} - Admin Panel | Virtual Learning for Student</title>
+    <title>{% block title %}{% endblock %} - Student | Virtual Learning for Student</title>
 
     <link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}" />
@@ -19,7 +19,7 @@
 <body>
     <nav class="navbar navbar-expand-lg bg-dark navbar-dark fixed-top">
         <div class="container-fluid">
-            <a class="navbar-brand ms-5" href="{{ url_for('admin.home') }}">
+            <a class="navbar-brand ms-5" href="{{ url_for('student.home') }}">
                 <img src="{{ url_for('static',filename='images/logo.png') }}" alt="Virtual Learning Platform"
                     height="30" class="d-inline-block align-text-top me-3">
                 Virtual Learning Platform
@@ -32,9 +32,9 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto me-5 mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ url_for('admin.home') }}">Home</a>
+                        <a class="nav-link active" aria-current="page" href="{{ url_for('student.home') }}">Home</a>
                     </li>
-                    <li class="nav-item dropdown">
+                    <!-- <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             Lecturers
@@ -53,11 +53,9 @@
                             Students
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li>
-                                <a class="dropdown-item" href="{{ url_for('admin.viewstudents') }}">View Students</a>
-                            </li>
+                            <li><a class="dropdown-item" href="#">View Students</a></li>
                         </ul>
-                    </li>
+                    </li> -->
                 </ul>
                 <!-- <form class="d-flex" role="search">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">

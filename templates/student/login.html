@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Login - Admin Panel | Virtual Learning for Student</title>
+    <title>Login - Student | Virtual Learning for Student</title>
 
     <link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}" />
@@ -19,7 +19,7 @@
 <body>
     <nav class="navbar navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand ms-5" href="{{ url_for('admin.home') }}">
+            <a class="navbar-brand ms-5" href="{{ url_for('student.home') }}">
                 <img src="{{ url_for('static',filename='images/logo.png') }}" alt="Virtual Learning Platform"
                     height="30" class="d-inline-block align-text-top">
                 Virtaul Learning Platform
@@ -42,8 +42,8 @@
             </div>
             <div class="col-6">
                 <div class="border border-1 rounded-5 mt-5 ps-5 pe-5">
-                    <p class="fs-4 fw-bold mt-4 mb-4">Admin Login</p>
-                    <form method="POST" action="{{ url_for('admin.login') }}">
+                    <p class="fs-4 fw-bold mt-4 mb-4">Student Login</p>
+                    <form method="POST" action="{{ url_for('student.login') }}">
                         {{ form.csrf_token }}
                         <div class="form-outline mb-4">
                             {{ form.email.label(for="email",class="form-label") }}

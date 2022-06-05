@@ -8,7 +8,7 @@
 {% block content %}
 <div class="container border border-1 rounded-2">
     <p class="fw-bold fs-4 mb-2 mt-2">View Lecturers</p>
-    <table class="table table-striped table-hover" id="myTable">
+    <table class="table table-striped table-hover" id="myTable" style="width:100%">
         <thead>
             <tr>
                 <th>ID</th>
@@ -27,15 +27,16 @@
                 <td>{{lect.name}}</td>
                 <td>{{lect.email}}</td>
                 <td>
+                    <p>{{sem}}</p>
                     <ul>
-                        {% for sem in lect.semester %}
+                        {% for sem in lect.semesters %}
                         <li>{{sem}}</li>
                         {% endfor %}
                     </ul>
                 </td>
                 <td>
                     <ul>
-                        {% for subj in lect.subjects_code %}
+                        {% for subj in lect.subjects %}
                         <li>{{subj}}</li>
                         {% endfor %}
                     </ul>

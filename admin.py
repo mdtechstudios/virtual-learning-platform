@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for,flash, request
+from flask import Blueprint, render_template, redirect, url_for,flash, request,jsonify
 from flask_wtf import FlaskForm
 from wtforms import StringField, EmailField, PasswordField, TextAreaField
 from wtforms.validators import DataRequired
@@ -15,20 +15,47 @@ def home():
 # View All Lecturers
 @admin.route('/lecturers', methods=['GET','POST'])
 def viewlecturers():
-    data = db.lecturers.find()
-    return render_template('admin/view-lecturers.html',lecturers=data)
+    lecturers = db.lecturers.find()
+    return render_template('admin/view-lecturers.html',lecturers=lecturers)
+
+
+
+# View All Students
+@admin.route('/students', methods=['GET','POST'])
+def viewstudents():
+    students = db.students.find()
+    return render_template('admin/view-students.html',students=students)
 
 
 # Add Lecturer
 @admin.route('/add-lecturers', methods=['GET','POST'])
 def addlecturers():
-    semdata = db.semesters.find()
-    subdata = db.subjects.find()
+    semesters = db.semesters.find()
+    subjects = db.subjects.find()
     if request.method == 'POST':
-        data = request.form
-        print(data)
-        return data
-    return render_template('admin/add-lecturer.html',semesters=semdata,subjects=subdata)
+        # data = request.form
+        fname = request.form.get('fname')
+        subs = request.form.getlist('subjects[]')
+        sems = request.form.getlist('semesters[]')
+        email = request.form.get('email')
+        password = request.form.get('password')
+        info = request.form.get('info')
+        doc = {
+            "name": fname,
+            "email": email,
+            "password": password,
+            "semesters": sems,
+            "subjects":subs,
+            "info": info
+        }
+        res = db.lecturers.insert_one(doc)
+        if res is not None:
+            flash("Lecturer Successfully Added!")
+            return render_template('admin/add-lecturer.html',semesters=semesters,subjects=subjects)
+        else:
+            flash("SomeLecturer Not Added!")
+            return render_template('admin/add-lecturer.html',semesters=semesters,subjects=subjects)
+    return render_template('admin/add-lecturer.html',semesters=semesters,subjects=subjects)
 
 
 # Admin Login
