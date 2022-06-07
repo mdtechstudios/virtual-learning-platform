@@ -1,3 +1,4 @@
+git clone https://github.com/mdtechstudios/virtual-learning-platform.git
 # For MacOS
 python3 -m venv venv
 . venv/bin/activate
