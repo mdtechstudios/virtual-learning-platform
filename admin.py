@@ -27,6 +27,17 @@ def viewstudents():
     return render_template('admin/view-students.html',students=students)
 
 
+# Delete Student
+@admin.route('/delete-student/<email>')
+def deletestudent(email):
+    qry = {
+        "email": email
+    }
+    res =  db.students.delete_one(qry)
+    print(res)
+    flash("Student removed")
+    return redirect(url_for('admin.viewstudents'))
+
 # Add Lecturer
 @admin.route('/add-lecturers', methods=['GET','POST'])
 def addlecturers():
@@ -58,6 +69,18 @@ def addlecturers():
     return render_template('admin/add-lecturer.html',semesters=semesters,subjects=subjects)
 
 
+# Delete Lecturer
+@admin.route('/delete-lecturer/<email>')
+def deletelecturer(email):
+    qry = {
+        "email": email
+    }
+    res =  db.lecturers.delete_one(qry)
+    print(res)
+    flash("Lecturer removed")
+    return redirect(url_for('admin.viewlecturers'))
+
+
 # Admin Login
 @admin.route('/login', methods=['GET','POST'])
 def login():
@@ -77,6 +100,11 @@ def login():
             return redirect(url_for('admin.home'))
     return render_template('admin/login.html',form=form)
 
+
+# Add semester
+@admin.route('/add-semester',methods=['GET','POST'])
+def addsem():
+    return render_template('admin/add-sem.html')
 
 # Admin Login Form
 class AdminLogin(FlaskForm):

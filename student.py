@@ -17,17 +17,19 @@ def register():
     form = StudentRegister()
     if form.validate_on_submit():
         doc = form.data
-        # email = request.form.get('email')
-        # phoneno = request.form.get('phoneno')
-        # password = request.form.get('password')
-        # docs = {
+        # name = form.data.get('name')
+        # email = form.data.get('email')
+        # phoneno = form.data.get('phoneno')
+        # password = form.data.get('password')
+        # doc = {
         #     name: name,
-        #     email:email,
-        #     phoneno:phoneno,
-        #     password:password
+        #     email: email,
+        #     phoneno: phoneno,
+        #     password: password
         # }
         print(doc)
-        res = db.lecturers.insert_one(doc)
+        res = db.students.insert_one(doc)
+        print(res)
         if res is not None:
             flash("Account Successfully Created!")
             return redirect(url_for('student.login'))
@@ -49,6 +51,7 @@ def login():
             "password":password
         }
         res = db.students.find_one(data)
+        print(res)
         if res is None:
             flash("Invalid Email/Password")
             render_template('student/login.html',form=form)
@@ -65,7 +68,7 @@ class StudentLogin(FlaskForm):
 
 # Student Register Form
 class StudentRegister(FlaskForm):
-    name = StringField('Enter your password',validators=[DataRequired('Please enter your name')])
-    phoneno = IntegerField('Enter phone number',validators=[DataRequired('Please enter valid phone number')])
+    name = StringField('Enter your name',validators=[DataRequired('Please enter your name')])
+    phoneno = StringField('Enter phone number',validators=[DataRequired('Please enter valid phone number')])
     email = EmailField('Enter your email', validators=[DataRequired('Please enter your email')])
     password = PasswordField('Enter your password',validators=[DataRequired('Please enter your password')])
