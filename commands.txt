@@ -3,6 +3,6 @@ git clone https://github.com/mdtechstudios/virtual-learning-platform.git
 python3 -m venv venv
 . venv/bin/activate
 pip3 install -r requirements.txt
-export FLASK_APP=hello
+export FLASK_APP=app
 export FLASK_ENV=development
 flask run

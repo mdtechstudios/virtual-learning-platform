@@ -1,5 +1,5 @@
-{% extends "admin/base.html" %}
-{% block title %}View Lecturers{% endblock %}
+{% extends "lecturer/base.html" %}
+{% block title %}My Contents{% endblock %}
 {% block head %}
 {{ super() }}
 <style type="text/css">
@@ -7,7 +7,7 @@
 {% endblock %}
 {% block content %}
 <div class="container border border-1 rounded-2">
-    <p class="fw-bold fs-4 mb-2 mt-2">View Lecturers</p>
+    <p class="fw-bold fs-4 mb-2 mt-2">My Contents</p>
     <div>{% with messages = get_flashed_messages() %}
         {% if messages %}
         {% for message in messages %}
@@ -23,38 +23,27 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Semesters</th>
-                <th>Subject Codes</th>
-                <th>Info</th>
-                <th>Action</th>
+                <th>File Name</th>
+                <th>Content Type</th>
+                <th>Subject Code</th>
+                <th>View</th>
+                <th>Download</th>
             </tr>
         </thead>
         <tbody>
-            {% for lect in lecturers: %}
+            {% for c in contents: %}
             <tr>
-                <td>{{lect._id}}</td>
-                <td>{{lect.name}}</td>
-                <td>{{lect.email}}</td>
+                <td>{{c._id}}</td>
+                <td>{{c.file}}</td>
+                <td>{{c.ctype}}</td>
+                <td>{{c.subject}}</td>
                 <td>
-                    <ul>
-                        {% for sem in lect.semesters %}
-                        <li>{{sem}}</li>
-                        {% endfor %}
-                    </ul>
+                    <a href="{{ url_for('static',filename='uploads/' + c.file) }}"
+                        class="btn btn-sm btn-warning">View</a>
                 </td>
                 <td>
-                    <ul>
-                        {% for subj in lect.subjects %}
-                        <li>{{subj}}</li>
-                        {% endfor %}
-                    </ul>
-                </td>
-                <td>{{lect.info}}</td>
-                <td>
-                    <a href="{{ url_for('admin.deletelecturer',email=lect.email) }}"
-                        class="btn btn-sm btn-danger">Delete</a>
+                    <a href="{{ url_for('static',filename='uploads/' + c.file) }}" class="btn btn-sm btn-success"
+                        download>Download</a>
                 </td>
             </tr>
             {% endfor %}

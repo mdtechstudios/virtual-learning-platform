@@ -1,0 +1,63 @@
+{% extends "lecturer/base.html" %}
+{% block title %}Upload Content {% endblock %}
+{% block head %}
+{{ super() }}
+<style type="text/css">
+</style>
+{% endblock %}
+{% block content %}
+<div class="container">
+    <p class="fw-bold fs-4 mb-2 mt-2">Add Content</p>
+    <div>{% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-warning bg-warning text-light alert-dismissible fade show" role="alert">
+            <strong>{{ message }}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
+    <div class="container">
+        <form method="POST" action="{{ url_for('lecturer.uploadcontent') }}" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col">
+                    <div class="mb-3">
+                        <label for="formFile" class="form-label">Content File</label>
+                        <input name="file" class="form-control" type="file" id="formFile" required>
+                        <input name="lecturer" type="hidden" value="{{lecturer.email}}">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="mb-3">
+                        <label for="ctype" class="form-label">Content Type</label>
+                        <select name="ctype" id="ctype" class="form-select" required>
+                            <option>Document</option>
+                            <option>Image</option>
+                            <option>Audio</option>
+                            <option>Video</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="mb-3">
+                        <label for="subject" class="form-label">Select Subject</label>
+                        <select name="subject" id="subject" class="form-select" required>
+                            {% for sub in subjects: %}
+                            {% for sub_code in lecturer.subjects: %}
+                            {% if sub.code in sub_code: %}
+                            <option value="{{ sub.code }}">{{ sub.name }}</option>
+                            {% endif %}
+                            {% endfor %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-md btn-rounded btn-block mb-4">Upload Content</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

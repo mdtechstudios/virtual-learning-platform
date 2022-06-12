@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Login - Student | Virtual Learning for Student</title>
+    <title>Login - Lecturer's Corner | Virtual Learning for Student</title>
 
     <link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}" />
@@ -19,7 +19,7 @@
 <body>
     <nav class="navbar navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand ms-5" href="{{ url_for('student.home') }}">
+            <a class="navbar-brand ms-5" href="{{ url_for('lecturer.home') }}">
                 <img src="{{ url_for('static',filename='images/logo.png') }}" alt="Virtual Learning Platform"
                     height="30" class="d-inline-block align-text-top">
                 Virtaul Learning Platform
@@ -42,8 +42,8 @@
             </div>
             <div class="col-6">
                 <div class="border border-1 rounded-5 mt-5 ps-5 pe-5">
-                    <p class="fs-4 fw-bold mt-4 mb-4">Student Login</p>
-                    <form method="POST" action="{{ url_for('student.login') }}">
+                    <p class="fs-4 fw-bold mt-4 mb-4">Lecturer Login</p>
+                    <form method="POST" action="{{ url_for('lecturer.login') }}">
                         {{ form.csrf_token }}
                         <div class="form-outline mb-4">
                             {{ form.email.label(for="email",class="form-label") }}
@@ -52,10 +52,6 @@
                         <div class="form-outline mb-4">
                             {{ form.password.label(for="password",class="form-label") }}
                             {{ form.password(class="form-control form-control-md",id="password") }}
-                        </div>
-                        <div class="form-outline mb-4">
-                            <p>Don't have an account? Please <a href="{{ url_for('student.register') }}">Register</a>
-                            </p>
                         </div>
                         <button type="submit" class="btn btn-primary btn-md btn-rounded btn-block mb-4">Sign in</button>
                     </form>

@@ -19,6 +19,20 @@ def viewlecturers():
     return render_template('admin/view-lecturers.html',lecturers=lecturers)
 
 
+# View All semesters
+@admin.route('/semesters', methods=['GET','POST'])
+def viewsemesters():
+    semesters = db.semesters.find()
+    return render_template('admin/view-semesters.html',semesters=semesters)
+
+
+# View All subjects
+@admin.route('/subjects', methods=['GET','POST'])
+def viewsubjects():
+    subjects = db.subjects.find()
+    return render_template('admin/view-subjects.html',subjects=subjects)
+
+
 
 # View All Students
 @admin.route('/students', methods=['GET','POST'])
@@ -37,6 +51,33 @@ def deletestudent(email):
     print(res)
     flash("Student removed")
     return redirect(url_for('admin.viewstudents'))
+
+
+
+# Delete Subjects
+@admin.route('/delete-subjects/<code>')
+def deletesub(code):
+    qry = {
+        "code": code
+    }
+    res =  db.subjects.delete_one(qry)
+    print(res)
+    flash("Subject removed")
+    return redirect(url_for('admin.viewsubjects'))
+
+
+
+# Delete Semesters
+@admin.route('/delete-semester/<code>')
+def deletesem(code):
+    qry = {
+        "code": code
+    }
+    res =  db.semesters.delete_one(qry)
+    print(res)
+    flash("Semester removed")
+    return redirect(url_for('admin.viewsemesters'))
+
 
 # Add Lecturer
 @admin.route('/add-lecturers', methods=['GET','POST'])
@@ -64,7 +105,7 @@ def addlecturers():
             flash("Lecturer Successfully Added!")
             return render_template('admin/add-lecturer.html',semesters=semesters,subjects=subjects)
         else:
-            flash("SomeLecturer Not Added!")
+            flash("Lecturer Not Added!")
             return render_template('admin/add-lecturer.html',semesters=semesters,subjects=subjects)
     return render_template('admin/add-lecturer.html',semesters=semesters,subjects=subjects)
 
@@ -104,7 +145,50 @@ def login():
 # Add semester
 @admin.route('/add-semester',methods=['GET','POST'])
 def addsem():
-    return render_template('admin/add-sem.html')
+    subjects = db.subjects.find()
+    if request.method == 'POST':
+        name = request.form.get('name')
+        code = request.form.get('code')
+        subjects = request.form.getlist('subjects[]')
+        doc = {
+            "name":name,
+            "code":code,
+            "subjects":subjects
+        }
+        res = db.semesters.insert_one(doc)
+        if res is not None:
+            flash("Semester Successfully Added!")
+            return render_template('admin/add-sem.html',subjects=subjects)
+        else:
+            flash("Semester Not Added!")
+            return render_template('admin/add-sem.html',subjects=subjects)
+        return render_template('admin/add-sem.html',subjects=subjects)
+    return render_template('admin/add-sem.html',subjects=subjects)
+
+
+
+# Add semester
+@admin.route('/add-subject',methods=['GET','POST'])
+def addsub():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        code = request.form.get('code')
+        info = request.form.get('info')
+        doc = {
+            "name":name,
+            "code":code,
+            "info":info
+        }
+        res = db.subjects.insert_one(doc)
+        if res is not None:
+            flash("Subject Successfully Added!")
+            return render_template('admin/add-sub.html')
+        else:
+            flash("Subject Not Added!")
+            return render_template('admin/add-sub.html')
+        return render_template('admin/add-sub.html')
+    return render_template('admin/add-sub.html')
+
 
 # Admin Login Form
 class AdminLogin(FlaskForm):

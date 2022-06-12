@@ -1,5 +1,5 @@
 {% extends "admin/base.html" %}
-{% block title %}View Lecturers{% endblock %}
+{% block title %}View Semesters{% endblock %}
 {% block head %}
 {{ super() }}
 <style type="text/css">
@@ -7,7 +7,7 @@
 {% endblock %}
 {% block content %}
 <div class="container border border-1 rounded-2">
-    <p class="fw-bold fs-4 mb-2 mt-2">View Lecturers</p>
+    <p class="fw-bold fs-4 mb-2 mt-2">View Semesters</p>
     <div>{% with messages = get_flashed_messages() %}
         {% if messages %}
         {% for message in messages %}
@@ -24,37 +24,26 @@
             <tr>
                 <th>ID</th>
                 <th>Name</th>
-                <th>Email</th>
-                <th>Semesters</th>
-                <th>Subject Codes</th>
-                <th>Info</th>
+                <th>Code</th>
+                <th>Subjects</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            {% for lect in lecturers: %}
+            {% for sem in semesters: %}
             <tr>
-                <td>{{lect._id}}</td>
-                <td>{{lect.name}}</td>
-                <td>{{lect.email}}</td>
+                <td>{{sem._id}}</td>
+                <td>{{sem.name}}</td>
+                <td>{{sem.code}}</td>
                 <td>
                     <ul>
-                        {% for sem in lect.semesters %}
-                        <li>{{sem}}</li>
+                        {% for sub in sem.subjects %}
+                        <li>{{sub}}</li>
                         {% endfor %}
                     </ul>
                 </td>
                 <td>
-                    <ul>
-                        {% for subj in lect.subjects %}
-                        <li>{{subj}}</li>
-                        {% endfor %}
-                    </ul>
-                </td>
-                <td>{{lect.info}}</td>
-                <td>
-                    <a href="{{ url_for('admin.deletelecturer',email=lect.email) }}"
-                        class="btn btn-sm btn-danger">Delete</a>
+                    <a href="{{ url_for('admin.deletesem',code=sem.code) }}" class="btn btn-sm btn-danger">Delete</a>
                 </td>
             </tr>
             {% endfor %}
