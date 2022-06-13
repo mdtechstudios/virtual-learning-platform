@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for,flash, request,jsonify
+from flask import Blueprint, render_template, redirect, url_for,flash, request,jsonify, session
 from flask_wtf import FlaskForm
 from wtforms import StringField, EmailField, PasswordField, TextAreaField
 from wtforms.validators import DataRequired
@@ -9,6 +9,8 @@ admin = Blueprint('admin', __name__, url_prefix='/admin')
 # Admin Dashboard
 @admin.route('/', methods=['GET','POST'])
 def home():
+    if not isLoggedIn():
+        return redirect(url_for('admin.login'))
     return render_template('admin/home.html')
 
 
@@ -33,12 +35,20 @@ def viewsubjects():
     return render_template('admin/view-subjects.html',subjects=subjects)
 
 
-
 # View All Students
 @admin.route('/students', methods=['GET','POST'])
 def viewstudents():
     students = db.students.find()
     return render_template('admin/view-students.html',students=students)
+
+
+
+# View All Contents
+@admin.route('/contents', methods=['GET','POST'])
+def viewcontents():
+    contents = db.contents.find()
+    return render_template('admin/contents.html',contents=contents)
+
 
 
 # Delete Student
@@ -138,6 +148,7 @@ def login():
             flash("Invalid Email/Password")
             render_template('admin/login.html',form=form)
         else:
+            session["admin_email"] = email
             return redirect(url_for('admin.home'))
     return render_template('admin/login.html',form=form)
 
@@ -158,7 +169,7 @@ def addsem():
         res = db.semesters.insert_one(doc)
         if res is not None:
             flash("Semester Successfully Added!")
-            return render_template('admin/add-sem.html',subjects=subjects)
+            return redirect(url_for('admin.viewsemesters'))
         else:
             flash("Semester Not Added!")
             return render_template('admin/add-sem.html',subjects=subjects)
@@ -189,6 +200,19 @@ def addsub():
         return render_template('admin/add-sub.html')
     return render_template('admin/add-sub.html')
 
+
+@admin.route('/logout')
+def logout():
+    session['admin_email'] = None
+    return redirect(url_for('admin.login'))
+
+def isLoggedIn():
+    if session.get('admin_email') == None:
+        print(session.get('admin_email') == None)
+        return False
+    else:
+        #return redirect(url_for(request.url))
+        return True
 
 # Admin Login Form
 class AdminLogin(FlaskForm):

@@ -1,10 +1,11 @@
-from flask import Blueprint, render_template, redirect, url_for,flash, request, current_app, jsonify
+from flask import Blueprint, render_template, redirect, url_for,flash, request, current_app, jsonify, session
 from flask_wtf import FlaskForm
 from wtforms import StringField, EmailField, PasswordField, TextAreaField
 from wtforms.validators import DataRequired
 from werkzeug.utils import secure_filename
 from database import db
 import os
+import uuid
 
 lecturer = Blueprint('lecturer', __name__, url_prefix='/lecturer')
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'mp4','mp3'}
@@ -31,21 +32,40 @@ def login():
             flash("Invalid Email/Password")
             render_template('lecturer/login.html',form=form)
         else:
+            session["l_email"] = email
             return redirect(url_for('lecturer.home'))
     return render_template('lecturer/login.html',form=form)
+
+
+
+@lecturer.route('/logout')
+def logout():
+    session['l_email'] = None
+    return redirect(url_for('lecturer.login'))
+
+def isLoggedIn():
+    if session.get('l_email') == None:
+        print(session.get('l_email') == None)
+        return False
+    else:
+        #return redirect(url_for(request.url))
+        return True
+
 
 
 # Lecturer Home Page
 @lecturer.route('/', methods=['GET','POST'])
 def home():
-    email = "devadiga181@gmail.com"
+    if not isLoggedIn():
+        return redirect(url_for('lecturer.login'))
+    email = session.get("l_email")
     contents = db.contents.find({"lecturer":email})
     return render_template('lecturer/home.html',contents=contents)
 
 
 @lecturer.route('/upload-content', methods=['GET','POST'])
 def uploadcontent():
-    email = "devadiga181@gmail.com"
+    email = session.get("l_email")
     lecturer = db.lecturers.find_one({"email":email})
     subjects = db.subjects.find()
     if request.method == 'POST':
@@ -63,11 +83,13 @@ def uploadcontent():
             filename = secure_filename(file.filename)
             file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
             print(filename)
+            uid = uuid.uuid4().hex
             doc = {
                 "file":filename,
                 "ctype":ctype,
                 "subject":subject,
-                "lecturer":lecturer
+                "lecturer":lecturer,
+                "uid":uid
             }
             res = db.contents.insert_one(doc)
             if res is not None:
@@ -76,11 +98,21 @@ def uploadcontent():
             else:
                 flash("Lecturer Not Added!")
                 flash('Content Added successfully')
-                return render_template('lecturer/upload-content.html',lecturer=lecturer,subjects=subjects)
+                return redirect(url_for('lecturer.home'))
             
         return render_template('lecturer/upload-content.html',lecturer=lecturer,subjects=subjects)
     return render_template('lecturer/upload-content.html',lecturer=lecturer,subjects=subjects)
 
+
+@lecturer.route('/delete-content/<id>', methods=['GET','POST'])
+def deletecontent(id):
+    res =  db.contents.delete_one({"uid":id})
+    print(res)
+    if res is None:
+        flash('Content Not Deleted')
+    else:
+        flash('Content Removed')
+    return redirect(url_for('lecturer.home'))
 
 # Lecturer Login Form
 class LecturerLogin(FlaskForm):

@@ -1,8 +1,11 @@
 git clone https://github.com/mdtechstudios/virtual-learning-platform.git
+git pull
 # For MacOS
+(Optional)
 python3 -m venv venv
 . venv/bin/activate
 pip3 install -r requirements.txt
+(Required)
 export FLASK_APP=app
 export FLASK_ENV=development
 flask run

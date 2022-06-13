@@ -28,6 +28,7 @@
                 <th>Subject Code</th>
                 <th>View</th>
                 <th>Download</th>
+                <th>Delete</th>
             </tr>
         </thead>
         <tbody>
@@ -38,12 +39,15 @@
                 <td>{{c.ctype}}</td>
                 <td>{{c.subject}}</td>
                 <td>
-                    <a href="{{ url_for('static',filename='uploads/' + c.file) }}"
-                        class="btn btn-sm btn-warning">View</a>
+                    <a href="{{ url_for('static',filename='uploads/' + c.file) }}" class="btn btn-sm btn-warning"
+                        target="_">View</a>
                 </td>
                 <td>
                     <a href="{{ url_for('static',filename='uploads/' + c.file) }}" class="btn btn-sm btn-success"
                         download>Download</a>
+                </td>
+                <td>
+                    <a href="{{ url_for('lecturer.deletecontent',id=c.uid) }}" class="btn btn-sm btn-danger">Delete</a>
                 </td>
             </tr>
             {% endfor %}

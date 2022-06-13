@@ -1,5 +1,5 @@
 {% extends "admin/base.html" %}
-{% block title %}View Semesters{% endblock %}
+{% block title %}All Contents{% endblock %}
 {% block head %}
 {{ super() }}
 <style type="text/css">
@@ -7,7 +7,7 @@
 {% endblock %}
 {% block content %}
 <div class="container border border-1 rounded-2">
-    <p class="fw-bold fs-4 mb-2 mt-2">View Semesters</p>
+    <p class="fw-bold fs-4 mb-2 mt-2">All Contents</p>
     <div>{% with messages = get_flashed_messages() %}
         {% if messages %}
         {% for message in messages %}
@@ -23,27 +23,33 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Name</th>
-                <th>Code</th>
-                <th>Subjects</th>
-                <th>Action</th>
+                <th>File Name</th>
+                <th>Content Type</th>
+                <th>Uploaded By</th>
+                <th>Subject Code</th>
+                <th>View</th>
+                <th>Download</th>
+                <th>Delete</th>
             </tr>
         </thead>
         <tbody>
-            {% for sem in semesters: %}
+            {% for c in contents: %}
             <tr>
-                <td>{{sem._id}}</td>
-                <td>{{sem.name}}</td>
-                <td>{{sem.code}}</td>
+                <td>{{c._id}}</td>
+                <td>{{c.file}}</td>
+                <td>{{c.ctype}}</td>
+                <td>{{c.lecturer}}</td>
+                <td>{{c.subject}}</td>
                 <td>
-                    <ul>
-                        {% for sub in sem.subjects %}
-                        <li>{{sub}}</li>
-                        {% endfor %}
-                    </ul>
+                    <a href="{{ url_for('static',filename='uploads/' + c.file) }}" class="btn btn-sm btn-warning"
+                        target="_">View</a>
                 </td>
                 <td>
-                    <a href="{{ url_for('admin.deletesem',code=sem.code) }}" class="btn btn-sm btn-danger">Delete</a>
+                    <a href="{{ url_for('static',filename='uploads/' + c.file) }}" class="btn btn-sm btn-success"
+                        download>Download</a>
+                </td>
+                <td>
+                    <a href="{{ url_for('lecturer.deletecontent',id=c.uid) }}" class="btn btn-sm btn-danger">Delete</a>
                 </td>
             </tr>
             {% endfor %}
@@ -51,7 +57,6 @@
     </table>
 </div>
 <script>
-    
     $(document).ready(function () {
         $('#myTable').DataTable();
     });

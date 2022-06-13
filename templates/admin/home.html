@@ -31,7 +31,15 @@
             </div>
         </div>
         <div class="col">
-
+            <div class="card" style="width: 18rem;">
+                <img src="{{ url_for('static',filename='images/content.png') }}" class="card-img-top"
+                    alt="Students Corner">
+                <div class="card-body">
+                    <h5 class="card-title">Contents</h5>
+                    <p class="card-text"></p>
+                    <a href="{{ url_for('admin.viewcontents') }}" class="btn btn-primary">View</a>
+                </div>
+            </div>
         </div>
     </div>
 

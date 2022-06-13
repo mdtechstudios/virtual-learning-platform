@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for,flash, request,jsonify
+from flask import Blueprint, render_template, redirect, url_for,flash, request,jsonify, session
 from flask_wtf import FlaskForm
 from wtforms import StringField, EmailField, PasswordField, TextAreaField, IntegerField
 from wtforms.validators import DataRequired
@@ -9,7 +9,31 @@ student = Blueprint('student', __name__, url_prefix='/student')
 # Student Dashboard
 @student.route('/', methods=['GET','POST'])
 def home():
-    return render_template('student/home.html')
+    if not isLoggedIn():
+        return redirect(url_for('student.login'))
+    semesters = db.semesters.find()
+    subjects = db.subjects.find()
+    contents = db.contents.find()
+    return render_template('student/home.html',semesters=semesters,subjects=subjects,contents=contents)
+
+
+@student.route('/subjects/<semcode>')
+def subjects(semcode):
+    semesters = db.semesters.find()
+    all_subjects = db.subjects.find()
+    contents = db.contents.find()
+    sub = db.semesters.find_one({"code":semcode})
+    print(sub)
+    return render_template('student/subjects.html',semesters=semesters,subjects=sub,all_subjects=all_subjects,contents=contents)
+
+
+@student.route('/contents/<subcode>')
+def contents(subcode):
+    semesters = db.semesters.find()
+    all_subjects = db.subjects.find_one({"code":subcode})
+    contents = db.contents.find({"subject":subcode})
+    return render_template('student/contents.html',semesters=semesters,all_subjects=all_subjects,contents=contents)
+
 
 # Student Register
 @student.route('/register', methods=['GET','POST'])
@@ -56,8 +80,24 @@ def login():
             flash("Invalid Email/Password")
             render_template('student/login.html',form=form)
         else:
+            session["student_email"] = email
             return redirect(url_for('student.home'))
     return render_template('student/login.html',form=form)
+
+
+
+@student.route('/logout')
+def logout():
+    session['student_email'] = None
+    return redirect(url_for('student.login'))
+
+def isLoggedIn():
+    if session.get('student_email') == None:
+        print(session.get('student_email') == None)
+        return False
+    else:
+        #return redirect(url_for(request.url))
+        return True
 
 
 # Student Login Form
