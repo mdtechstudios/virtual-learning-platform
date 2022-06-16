@@ -42,6 +42,17 @@ def viewstudents():
     return render_template('admin/view-students.html',students=students)
 
 
+# Delete Content
+@admin.route('/delete-content/<id>', methods=['GET','POST'])
+def deletecontent(id):
+    res =  db.contents.delete_one({"uid":id})
+    print(res)
+    if res is None:
+        flash('Content Not Deleted')
+    else:
+        flash('Content Removed')
+    return redirect(url_for('admin.viewcontents'))
+
 
 # View All Contents
 @admin.route('/contents', methods=['GET','POST'])
@@ -113,7 +124,7 @@ def addlecturers():
         res = db.lecturers.insert_one(doc)
         if res is not None:
             flash("Lecturer Successfully Added!")
-            return render_template('admin/add-lecturer.html',semesters=semesters,subjects=subjects)
+            return redirect(url_for('admin.viewlecturers'))
         else:
             flash("Lecturer Not Added!")
             return render_template('admin/add-lecturer.html',semesters=semesters,subjects=subjects)
@@ -196,7 +207,7 @@ def addsub():
             return render_template('admin/add-sub.html')
         else:
             flash("Subject Not Added!")
-            return render_template('admin/add-sub.html')
+            return redirect(url_for('admin.viewsubjects'))
         return render_template('admin/add-sub.html')
     return render_template('admin/add-sub.html')
 

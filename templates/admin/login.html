@@ -8,11 +8,11 @@
     <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}" />
 
     <style type="text/css">
-        /* body {
-            background-image: url('http://127.0.0.1:5000/static/images/loginbg.png');
+        body {
+            background-image: url('/static/images/bg.jpg');
             background-size: cover;
             background-repeat: no-repeat;
-        } */
+        }
     </style>
 </head>
 
@@ -41,7 +41,7 @@
                 {% endwith %}
             </div>
             <div class="col-6">
-                <div class="border border-1 rounded-5 mt-5 ps-5 pe-5">
+                <div class="border border-1 rounded-5 mt-5 ps-5 pe-5 bg-white">
                     <p class="fs-4 fw-bold mt-4 mb-4">Admin Login</p>
                     <form method="POST" action="{{ url_for('admin.login') }}">
                         {{ form.csrf_token }}

@@ -26,6 +26,7 @@
                 <th>Subject Code</th>
                 <th>Content Type</th>
                 <th>File Name</th>
+                <th>Uploaded By</th>
                 <th>View</th>
                 <th>Download</th>
             </tr>
@@ -37,6 +38,7 @@
                 <td>{{c.subject}}</td>
                 <td>{{c.ctype}}</td>
                 <td>{{c.file}}</td>
+                <td><a href="{{ url_for('student.lecturerinfo',lectemail=c.lecturer) }}">{{c.lecturer}}</a></td>
                 <td>
                     <a href="{{ url_for('static',filename='uploads/' + c.file) }}" class="btn btn-sm btn-warning"
                         target="_">View</a>

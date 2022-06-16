@@ -34,6 +34,11 @@ def contents(subcode):
     contents = db.contents.find({"subject":subcode})
     return render_template('student/contents.html',semesters=semesters,all_subjects=all_subjects,contents=contents)
 
+@student.route('/lecturer-info/<lectemail>')
+def lecturerinfo(lectemail):
+    lecturer = db.lecturers.find_one({"email":lectemail})
+    return render_template('student/lecturer-info.html',lecturer=lecturer)
+
 
 # Student Register
 @student.route('/register', methods=['GET','POST'])
@@ -83,7 +88,6 @@ def login():
             session["student_email"] = email
             return redirect(url_for('student.home'))
     return render_template('student/login.html',form=form)
-
 
 
 @student.route('/logout')
