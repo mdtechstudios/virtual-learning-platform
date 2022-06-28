@@ -215,7 +215,7 @@ def addsub():
 @admin.route('/logout')
 def logout():
     session['admin_email'] = None
-    return redirect(url_for('admin.login'))
+    return redirect(url_for('home'))
 
 def isLoggedIn():
     if session.get('admin_email') == None:

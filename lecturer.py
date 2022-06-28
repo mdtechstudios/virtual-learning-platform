@@ -41,7 +41,7 @@ def login():
 @lecturer.route('/logout')
 def logout():
     session['l_email'] = None
-    return redirect(url_for('lecturer.login'))
+    return redirect(url_for('home'))
 
 def isLoggedIn():
     if session.get('l_email') == None:

@@ -93,7 +93,7 @@ def login():
 @student.route('/logout')
 def logout():
     session['student_email'] = None
-    return redirect(url_for('student.login'))
+    return redirect(url_for('home'))
 
 def isLoggedIn():
     if session.get('student_email') == None:
